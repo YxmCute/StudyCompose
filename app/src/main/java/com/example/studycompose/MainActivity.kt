@@ -10,18 +10,25 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -35,12 +42,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            DefaultPreview()
+            // NewStory()
+            /* StudyComposeTheme() {
+                 Surface(color = Color.Blue) {
+                     Greeting(name = "lijun")
+                 }
+             }*/
             /* LayoutCodeLab()*/
-            StudyComposeTheme() {
-                Surface() {
-                    ImageList()
-                }
-            }
+            /* StudyComposeTheme() {
+                 Surface() {
+                     ImageList()
+                 }
+             }*/
 
             /* StudyComposeTheme {
                  // A surface container using the 'background' color from the theme
@@ -54,34 +68,80 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+@ExperimentalFoundationApi
+@Composable
+fun MyApp(content: @Composable () -> Unit) {
+    StudyComposeTheme() {
+        Surface(color = Color.Yellow) {
+            content()
+
+        }
+
+    }
+}
+
 
 @ExperimentalFoundationApi
 @Composable
 fun Greeting(name: String) {
     var color = Color.Green
-    Text(
-        text = "Hello $name!",
-        modifier = Modifier
-            .border(
-                border = BorderStroke(3.dp, color = Color(0xFFE91E63)),
-                shape = RoundedCornerShape(10.dp)
-            )
-            .combinedClickable(
-                onClick = {
+    Surface(color = Color.Cyan) {
+        Text(
+            text = "Hello $name!",
+            modifier = Modifier
+                .border(
+                    border = BorderStroke(3.dp, color = Color(0xFFE91E63)),
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .combinedClickable(
+                    onClick = {
+                        color = Color.Black
+                    },
+                    onDoubleClick = { color = Color.Red }
+                ),
+            fontSize = 20.sp,
+            fontFamily = FontFamily.Monospace,
+            fontStyle = FontStyle.Italic,
+            letterSpacing = 0.em, textDecoration = TextDecoration.LineThrough
 
-                    color = Color.Black
-                },
-                onDoubleClick = { color = Color.Red }
-            ),
-        fontSize = 20.sp,
-        fontFamily = FontFamily.Monospace,
-        fontStyle = FontStyle.Italic,
-        letterSpacing = 0.em, textDecoration = TextDecoration.LineThrough
 
+        )
+    }
 
-    )
 }
 
+@ExperimentalFoundationApi
+@Composable
+fun MyScreenContent(list: List<String> = listOf("Android", "there", "didododo")) {
+    Column {
+        for (name in list) {
+            Greeting(name = name)
+            Divider(color = Color.Black)
+        }
+        Divider(color = Color.Transparent, thickness = 32.dp)
+        Counter()
+    }
+
+}
+
+@Composable
+fun Counter() {
+    val count = remember { mutableStateOf(0) }
+    Button(onClick = { count.value++ }) {
+        Text(text = "I`ve been clicked ${count.value} times")
+    }
+}
+
+@ExperimentalFoundationApi
+@Preview("MyScreen preview")
+@Composable
+fun DefaultPreview() {
+    MyApp {
+        MyScreenContent()
+    }
+}
+
+/*
 @ExperimentalFoundationApi
 @Preview
 @Composable
@@ -210,4 +270,4 @@ fun ImageList() {
         }
     }
 
-}
+}*/
