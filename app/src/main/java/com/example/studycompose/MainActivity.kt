@@ -63,8 +63,11 @@ fun LayoutsCodeLab() {
 
 @Composable
 fun BodyContent(modifier: Modifier = Modifier) {
-}
+    BoxWithConstraints (modifier=Modifier.background(Color.Blue)){
 
+        Text("My minHeight is $maxHeight while my maxWidth is $maxWidth")
+    }
+}
 
 
 @ExperimentalFoundationApi
